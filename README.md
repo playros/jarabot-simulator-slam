@@ -58,7 +58,7 @@ Jarabot Simulator에서 사용하는 커스텀 메시지 정의 패키지
 | `Ecd`  | 엔코더 데이터 메시지       |
 
 
-## 🛠 설치 방법 (Installation)
+## 설치 방법 (Installation)
 
 ### 1. 워크스페이스 생성
 
@@ -73,7 +73,7 @@ source ~/jarabot_sim_ws/install/setup.bash
 ros2 launch jarabot_sim simulator.launch.py
 ros2 run jarabot_sim keyboard
 
-### 키보드 조작 방
+### 키보드 조작 방법
 
 | 키          | 기능                        |
 | ----------- | --------------------------  |
@@ -95,5 +95,5 @@ ros2 run jarabot_sim keyboard
 | `/jara_robot_marker` | Marker                   | RViz2 로봇 모델 표시       |
 
  
-### RViz 에서 보여지는 자라
+### RViz 에서 보여지는 자라봇
 ![Jarabot RViz](jarabot_sim_rviz.png)
