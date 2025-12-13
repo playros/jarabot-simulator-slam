@@ -57,7 +57,6 @@ Jarabot Simulator에서 사용하는 커스텀 메시지 정의 패키지
 | `Cmd`  | 로봇 제어 명령 (속도/회전) |
 | `Ecd`  | 엔코더 데이터 메시지       |
 
-
 ## 설치 방법 (Installation)
 
 ### 1. 워크스페이스 생성
@@ -65,25 +64,42 @@ Jarabot Simulator에서 사용하는 커스텀 메시지 정의 패키지
 mkdir -p ~/jarabot_sim_ws/src
 cd ~/jarabot_sim_ws/src
 
-git clone https://github.com/playros/jarabot-simulator.git
+### 2. 저장소 clone
+git clone https://github.com/playros/jarabot-simulator.git .
+
+### 3. 빌드 & 환경설정
 cd ~/jarabot_sim_ws
 colcon build --symlink-install
-source ~/jarabot_sim_ws/install/setup.bash
+source install/setup.bash
 
-ros2 launch jarabot_sim simulator.launch.py
-ros2 run jarabot_sim keyboard
+### 4. 터미널 1
+source install/setup.bash
+ros2 launch jarabot_sim jarabot_simulator.launch.py
 
-### 키보드 조작 방법
+### 5. 터미널 2
+source install/setup.bash
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
-| 키          | 기능                        |
-| ----------- | --------------------------  |
-| `w` / `x`   | 전진 / 후진 속도 10% 증가   |
-| `a` / `d`   | 좌회전 / 우회전 10% 증가    |
-| `q` / `e`   | 선속도 유지하며 회전만 조절 |
-| `s`         | 정지                        |
-| `CTRL + C`  | 종료                        |
+### 6. 터미널 3
+source install/setup.bash
+rviz2
 
-### 주요 ROS2 토픽 목록
+## 키보드 조작 방법
+
+| 키         | 동작                   |
+| ---------- | ---------------------- |
+| `i`        | 전진                   |
+| `,`        | 후진                   |
+| `j`        | 좌회전                 |
+| `l`        | 우회전                 |
+| `k`        | 정지                   |
+| `q / z`    | 최대 속도 증가 / 감소  |
+| `w / x`    | 선속도 증가 / 감소     |
+| `e / c`    | 각속도 증가 / 감소     |
+| `Ctrl + C` | 종료                   |
+
+
+## 주요 ROS2 토픽 목록
 
 | 토픽                 | 타입                     | 설명                       |
 | -------------------- | ------------------------ | -------------------------- |
@@ -95,5 +111,5 @@ ros2 run jarabot_sim keyboard
 | `/jara_robot_marker` | Marker                   | RViz2 로봇 모델 표시       |
 
  
-### RViz 에서 보여지는 자라봇
+## RViz 에서 보여지는 자라봇
 ![Jarabot RViz](jarabot_sim_rviz.png)
