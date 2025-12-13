@@ -97,4 +97,5 @@ ros2 run jarabot_sim keyboard
 | `/cmd`               | `jarabot_interfaces/Cmd` | 로봇 속도 명령             |
 | `/ecd`               | `jarabot_interfaces/Ecd` | 엔코더 피드백              |
 | `/jara_robot_marker` | Marker                   | RViz2 로봇 모델 표시       |
- 
+
+![RViz Screenshot](jarabot_sim_rviz.png)
