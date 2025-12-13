@@ -18,8 +18,12 @@ ros2 launch jarabot_sim jarabot_simulator.launch.py
 
 # arabot Simulator for ROS 2 Humble
 
-Jarabot Simulator는 실제 자라봇(Jarabot)의 주행, 센서, 환경 정보를 **ROS 2 Humble 에서 그대로 재현**할 수 있도록 설계된 2D/3D 하이브리드 시뮬레이터입니다.  
-실제 로봇 없이도 **SLAM, Navigation2, 경로추종, 센서 데이터 처리 연습**이 가능하도록 개발되었습니다.
+Jarabot Simulator는 실제 자라봇(Jarabot)의 주행, 센서, 환경 정보를 
+**ROS 2 Humble 에서 그대로 재현**할 수 있도록 설계된 2D/3D 하이브리드 
+시뮬레이터입니다. 
+
+실제 로봇 없이도 **SLAM, Navigation2, 경로추종, 센서 데이터 처리 연습**이 
+가능하도록 개발되었습니다.
 
 
 ## 주요 특징 (Features)
@@ -61,28 +65,28 @@ Jarabot Simulator에서 사용하는 커스텀 메시지 정의 패키지
 
 ### 1. 워크스페이스 생성
 
-mkdir -p ~/jarabot_sim_ws/src
-cd ~/jarabot_sim_ws/src
+$mkdir -p ~/jarabot_sim_ws/src
+$cd ~/jarabot_sim_ws/src
 
 ### 2. 저장소 clone
-git clone https://github.com/playros/jarabot-simulator.git .
+$git clone https://github.com/playros/jarabot-simulator.git .
 
 ### 3. 빌드 & 환경설정
-cd ~/jarabot_sim_ws
-colcon build --symlink-install
-source install/setup.bash
+$cd ~/jarabot_sim_ws
+$colcon build --symlink-install
+$source install/setup.bash
 
 ### 4. 터미널 1
-source install/setup.bash
-ros2 launch jarabot_sim jarabot_simulator.launch.py
+$source install/setup.bash
+$ros2 launch jarabot_sim jarabot_simulator.launch.py
 
 ### 5. 터미널 2
-source install/setup.bash
-ros2 run teleop_twist_keyboard teleop_twist_keyboard
+$source install/setup.bash
+$ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 ### 6. 터미널 3
-source install/setup.bash
-rviz2
+$source install/setup.bash
+$rviz2
 
 ## 키보드 조작 방법
 
