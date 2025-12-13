@@ -11,6 +11,7 @@ the physical jarabot hardware.
 
 ## Build Procedure
 
+```bash
 cd jarabot_sim_ws
 colcon build
 source install/setup.bash
@@ -65,28 +66,34 @@ Jarabot Simulator에서 사용하는 커스텀 메시지 정의 패키지
 
 ### 1. 워크스페이스 생성
 
-$mkdir -p ~/jarabot_sim_ws/src
-$cd ~/jarabot_sim_ws/src
+```bash
+mkdir -p ~/jarabot_sim_ws/src
+cd ~/jarabot_sim_ws/src
 
 ### 2. 저장소 clone
-$git clone https://github.com/playros/jarabot-simulator.git .
+```bash
+git clone https://github.com/playros/jarabot-simulator.git .
 
 ### 3. 빌드 & 환경설정
-$cd ~/jarabot_sim_ws
-$colcon build --symlink-install
-$source install/setup.bash
+```bash
+cd ~/jarabot_sim_ws
+colcon build --symlink-install
+source install/setup.bash
 
 ### 4. 터미널 1
-$source install/setup.bash
-$ros2 launch jarabot_sim jarabot_simulator.launch.py
+```bash
+source install/setup.bash
+ros2 launch jarabot_sim jarabot_simulator.launch.py
 
 ### 5. 터미널 2
-$source install/setup.bash
-$ros2 run teleop_twist_keyboard teleop_twist_keyboard
+```bash
+source install/setup.bash
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 ### 6. 터미널 3
-$source install/setup.bash
-$rviz2
+```bash
+source install/setup.bash
+rviz2
 
 ## 키보드 조작 방법
 
