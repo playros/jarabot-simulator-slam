@@ -21,7 +21,6 @@ ros2 launch jarabot_sim jarabot_simulator.launch.py
 Jarabot Simulator는 실제 자라봇(Jarabot)의 주행, 센서, 환경 정보를 **ROS 2 Humble 에서 그대로 재현**할 수 있도록 설계된 2D/3D 하이브리드 시뮬레이터입니다.  
 실제 로봇 없이도 **SLAM, Navigation2, 경로추종, 센서 데이터 처리 연습**이 가능하도록 개발되었습니다.
 
----
 
 ## 주요 특징 (Features)
 
@@ -36,7 +35,6 @@ Jarabot Simulator는 실제 자라봇(Jarabot)의 주행, 센서, 환경 정보�
 - **Keyboard Teleop 지원** 
   - 시뮬레이터 내에서 직접 속도 증가/감소, 회전 조작 가능
 
----
 
 ## 패키지 구성
 
@@ -59,13 +57,11 @@ Jarabot Simulator에서 사용하는 커스텀 메시지 정의 패키지
 | `Cmd`  | 로봇 제어 명령 (속도/회전) |
 | `Ecd`  | 엔코더 데이터 메시지       |
 
----
 
 ## 🛠 설치 방법 (Installation)
 
 ### 1. 워크스페이스 생성
 
-```bash
 mkdir -p ~/jarabot_sim_ws/src
 cd ~/jarabot_sim_ws/src
 
@@ -97,3 +93,7 @@ ros2 run jarabot_sim keyboard
 | `/cmd`               | `jarabot_interfaces/Cmd` | 로봇 속도 명령             |
 | `/ecd`               | `jarabot_interfaces/Ecd` | 엔코더 피드백              |
 | `/jara_robot_marker` | Marker                   | RViz2 로봇 모델 표시       |
+
+ 
+### RViz 에서 보여지는 자라
+![Jarabot RViz](jarabot_sim_rviz.png)
