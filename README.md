@@ -23,6 +23,8 @@ perception algorithms without physical hardware**.
 
 ## Overview
 
+![Jarabot RViz](jarabot_sim_rviz.png)
+
 Jarabot Simulator reproduces core mobile robot components in ROS 2, including:
 
 - 2D LiDAR sensor simulation
