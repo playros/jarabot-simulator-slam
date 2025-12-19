@@ -53,6 +53,10 @@ and algorithm development without real hardware**.
 - ROS 2 Humble
 - RViz2
 
+```bash
+ros2 -h
+echo $ROS_DISTRO   # should output: humble
+```
 ---
 
 ## Workspace Structure
@@ -98,6 +102,45 @@ and are not required to be pushed to GitHub.
 ### 3. jarabot_sim_interfaces
 
 Custom message definitions for Jarabot.
+
+## Required Tools
+
+These are needed to build and manage ROS workspaces.
+
+```bash
+sudo apt update
+sudo apt install -y \
+  git \
+  python3-colcon-common-extensions \
+  python3-rosdep \
+  build-essential
+```
+
+## Required ROS 2 Packages (Simulator)
+
+Required for simulation, TF handling, and RViz visualization.
+
+```bash
+sudo apt install -y \
+  ros-humble-rviz2 \
+  ros-humble-tf2-ros ros-humble-tf-transformations \
+  ros-humble-robot-state-publisher \
+  ros-humble-joint-state-publisher \
+  ros-humble-nav-msgs \
+  ros-humble-sensor-msgs \
+  ros-humble-geometry-msgs \
+  ros-humble-teleop-twist-keyboard
+```
+
+## Cartographer SLAM (Required for Mapping)
+
+Used to generate a 2D map from simulated LiDAR data.
+
+```bash
+sudo apt install -y \
+  ros-humble-cartographer \
+  ros-humble-cartographer-ros
+```
 
 ## Installation
 
@@ -153,6 +196,77 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard \
 ```bash
 source ~/jarabot_sim_ws/install/setup.bash
 ros2 run jarabot_sim jarabot_sim_safety_stop
+```
+---
+
+## Post-Launch Checklist (Quick Verification)
+
+### Nodes are running
+
+```bash
+ros2 node list
+```
+
+Expected:
+
+- jara_sim_* nodes (encoder, odometry, lidar, marker, path)
+- cartographer_node
+- cartographer_occupancy_grid_node
+
+📌 If Cartographer nodes are missing, SLAM is not running.
+
+### Required topics exist
+
+```bash
+ros2 topic list | grep -E "/cmd_vel|/scan|/odom|/map|/tf"
+```
+
+| Topic      | Purpose                |
+| ---------- | ---------------------- |
+| `/cmd_vel` | Robot velocity command |
+| `/scan`    | Simulated LiDAR        |
+| `/odom`    | Odometry               |
+| `/map`     | SLAM-generated map     |
+| `/tf`      | Coordinate transforms  |
+
+### Topics are publishing data
+
+```bash
+ros2 topic hz /scan
+ros2 topic hz /odom
+ros2 topic hz /map
+```
+✔ If frequency is not zero, the system is working.
+
+### TF tree is connected (MOST IMPORTANT)
+
+```bash
+ros2 run tf2_ros tf2_echo map base_link
+```
+Expected TF chain:
+```bash
+map → odom → base_link
+```
+📌 If this is broken, the map will not appear correctly in RViz.
+
+### Robot movement test
+
+```bash
+ros2 topic pub --once /cmd_velros2 topic pub --once /cmd_vel_raw geometry_msgs/msg/Twist "{linear: {x: 0.2}, angular: {z: 0.0}}" geometry_msgs/msg/Twist \
+"{linear: {x: 0.2}, angular: {z: 0.0}}"
+```
+✔ Robot moves
+✔ Odometry changes
+✔ Map updates in RViz
+
+---
+
+🧠 Summary
+
+- This project provides a ROS 2 Humble–based 2D mobile robot simulator
+- Includes virtual LiDAR, odometry, TF, and Cartographer SLAM
+- Designed for education, SLAM testing, and algorithm development
+
 ```
 
 ## Keyboard Control (teleop_twist_keyboard)
