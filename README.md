@@ -255,21 +255,13 @@ map → odom → base_link
 ros2 topic pub --once /cmd_velros2 topic pub --once /cmd_vel_raw geometry_msgs/msg/Twist "{linear: {x: 0.2}, angular: {z: 0.0}}" geometry_msgs/msg/Twist \
 "{linear: {x: 0.2}, angular: {z: 0.0}}"
 ```
-✔ Robot moves
-✔ Odometry changes
-✔ Map updates in RViz
+- Robot moves
+- Odometry changes
+- Map updates in RViz
 
 ---
 
-🧠 Summary
-
-- This project provides a ROS 2 Humble–based 2D mobile robot simulator
-- Includes virtual LiDAR, odometry, TF, and Cartographer SLAM
-- Designed for education, SLAM testing, and algorithm development
-
-```
-
-## Keyboard Control (teleop_twist_keyboard)
+### Keyboard Control (teleop_twist_keyboard)
 
 | Key        | Action                    |
 | ---------- | ------------------------- |
@@ -281,7 +273,7 @@ ros2 topic pub --once /cmd_velros2 topic pub --once /cmd_vel_raw geometry_msgs/m
 | `q / z`    | Increase / decrease speed |
 | `Ctrl + C` | Exit                      |
 
-## Main Topics
+### Main Topics
 
 | Topic          | Type                     | Description           |
 | -------------- | ------------------------ | --------------------- |
@@ -308,6 +300,12 @@ ros2 topic pub --once /cmd_velros2 topic pub --once /cmd_vel_raw geometry_msgs/m
 - Cartographer configuration testing
 - Navigation2 pre-integration testing
 - Simulation-only robotics training
+
+### Summary
+
+- This project provides a ROS 2 Humble–based 2D mobile robot simulator
+- Includes virtual LiDAR, odometry, TF, and Cartographer SLAM
+- Designed for education, SLAM testing, and algorithm development
 
 ---
 
