@@ -3,6 +3,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "visualization_msgs/msg/marker.hpp"
+#include "visualization_msgs/msg/marker_array.hpp"
 
 using namespace std::chrono_literals;
 
@@ -12,98 +13,127 @@ public:
     JaraSimMarker()
         : Node("jara_sim_marker")
     {
-        // 기본 좌표계: base_link (로봇 몸체 기준)
+        // ❌ use_sim_time 은 declare 하지 않는다 (ROS2가 자동 관리)
+
         declare_parameter("frame_id", std::string("base_link"));
         frame_id_ = get_parameter("frame_id").as_string();
 
-        marker_pub_ = create_publisher<visualization_msgs::msg::Marker>(
-            "/jara_robot_marker", 10);
+        marker_pub_ = create_publisher<visualization_msgs::msg::MarkerArray>(
+            "/jara_robot_markers", 10);
 
-        // 10Hz 로 마커 갱신
+        // 라이다(원기둥) 파라미터
+        declare_parameter("lidar_x", 0.0);
+        declare_parameter("lidar_y", 0.0);
+        declare_parameter("lidar_z", 0.12);
+        declare_parameter("lidar_d", 0.08);
+        declare_parameter("lidar_h", 0.05);
+
         timer_ = create_wall_timer(
             100ms, std::bind(&JaraSimMarker::publishMarkers, this));
 
-        RCLCPP_INFO(get_logger(), "JaraSimMarker started (frame_id=%s)",
-                    frame_id_.c_str());
+        RCLCPP_INFO(
+            get_logger(),
+            "JaraSimMarker started (frame_id=%s) topic=/jara_robot_markers (MarkerArray)",
+            frame_id_.c_str());
     }
 
 private:
     void publishMarkers()
     {
-        rclcpp::Time now = get_clock()->now();
+        // ✅ RViz 깜박임/사라짐 방지 핵심
+        const auto stamp0 = rclcpp::Time(0, 0, RCL_ROS_TIME);
 
-        // 1) 자동차 몸체: 직육면체 (2:1 비율)
+        visualization_msgs::msg::MarkerArray arr;
+
+        // --------------------
+        // 1) Body
+        // --------------------
         visualization_msgs::msg::Marker body;
-        body.header.stamp = now;
+        body.header.stamp = stamp0;
         body.header.frame_id = frame_id_;
+        body.frame_locked = true;
+
         body.ns = "jarabot";
         body.id = 0;
         body.type = visualization_msgs::msg::Marker::CUBE;
         body.action = visualization_msgs::msg::Marker::ADD;
 
-        // 로봇 중심에 위치
         body.pose.position.x = 0.0;
         body.pose.position.y = 0.0;
-        body.pose.position.z = 0.05;  // 바닥 위로 조금 띄우기
-        body.pose.orientation.x = 0.0;
-        body.pose.orientation.y = 0.0;
-        body.pose.orientation.z = 0.0;
+        body.pose.position.z = 0.05;
         body.pose.orientation.w = 1.0;
 
-        // ★ 2:1 비율 (길이:폭)
-        body.scale.x = 0.40;  // 길이 40cm
-        body.scale.y = 0.20;  // 폭   20cm
-        body.scale.z = 0.10;  // 높이 10cm
+        body.scale.x = 0.40;
+        body.scale.y = 0.20;
+        body.scale.z = 0.10;
 
-        // 파란색 반투명 박스
-        body.color.r = 0.0f;
-        body.color.g = 0.0f;
         body.color.b = 1.0f;
         body.color.a = 1.0f;
 
-        body.lifetime = rclcpp::Duration(0, 0);  // 0이면 계속 유지
+        body.lifetime = rclcpp::Duration(0, 0);
+        arr.markers.push_back(body);
 
-        marker_pub_->publish(body);
-
-        // 2) 진행 방향 화살표 (앞쪽에 하나만)
+        // --------------------
+        // 2) Arrow
+        // --------------------
         visualization_msgs::msg::Marker arrow;
-        arrow.header.stamp = now;
+        arrow.header.stamp = stamp0;
         arrow.header.frame_id = frame_id_;
+        arrow.frame_locked = true;
+
         arrow.ns = "jarabot";
         arrow.id = 1;
         arrow.type = visualization_msgs::msg::Marker::ARROW;
         arrow.action = visualization_msgs::msg::Marker::ADD;
 
-        double body_length = body.scale.x;
+        arrow.pose.position.x = body.scale.x * 0.25;
+        arrow.pose.position.z = body.scale.z * 0.6;
+        arrow.pose.orientation.w = 1.0;
 
-        // 몸체 중앙보다 약간 앞 + 위에서 시작
-        arrow.pose.position.x = body_length * 0.25;  // 앞쪽으로 1/4 길이
-        arrow.pose.position.y = 0.0;
-        arrow.pose.position.z = body.scale.z * 0.6;  // 몸체 위쪽
-
-        arrow.pose.orientation.x = 0.0;
-        arrow.pose.orientation.y = 0.0;
-        arrow.pose.orientation.z = 0.0;
-        arrow.pose.orientation.w = 1.0;  // x축(+앞) 방향
-
-        // 화살표 길이/두께
-        arrow.scale.x = body_length * 0.8;  // 전체 길이
-        arrow.scale.y = 0.03;               // 굵기
+        arrow.scale.x = body.scale.x * 0.8;
+        arrow.scale.y = 0.03;
         arrow.scale.z = 0.03;
 
-        // 빨간색 화살표
         arrow.color.r = 1.0f;
-        arrow.color.g = 0.0f;
-        arrow.color.b = 0.0f;
         arrow.color.a = 1.0f;
 
         arrow.lifetime = rclcpp::Duration(0, 0);
+        arr.markers.push_back(arrow);
 
-        marker_pub_->publish(arrow);
+        // --------------------
+        // 3) Lidar (Yellow Cylinder)
+        // --------------------
+        visualization_msgs::msg::Marker lidar;
+        lidar.header.stamp = stamp0;
+        lidar.header.frame_id = frame_id_;
+        lidar.frame_locked = true;
+
+        lidar.ns = "jarabot";
+        lidar.id = 2;
+        lidar.type = visualization_msgs::msg::Marker::CYLINDER;
+        lidar.action = visualization_msgs::msg::Marker::ADD;
+
+        lidar.pose.position.x = get_parameter("lidar_x").as_double();
+        lidar.pose.position.y = get_parameter("lidar_y").as_double();
+        lidar.pose.position.z = get_parameter("lidar_z").as_double();
+        lidar.pose.orientation.w = 1.0;
+
+        lidar.scale.x = get_parameter("lidar_d").as_double();
+        lidar.scale.y = get_parameter("lidar_d").as_double();
+        lidar.scale.z = get_parameter("lidar_h").as_double();
+
+        lidar.color.r = 1.0f;
+        lidar.color.g = 1.0f;
+        lidar.color.a = 1.0f;
+
+        lidar.lifetime = rclcpp::Duration(0, 0);
+        arr.markers.push_back(lidar);
+
+        marker_pub_->publish(arr);
     }
 
     std::string frame_id_;
-    rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr marker_pub_;
+    rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr marker_pub_;
     rclcpp::TimerBase::SharedPtr timer_;
 };
 

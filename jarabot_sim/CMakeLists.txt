@@ -66,6 +66,14 @@ install(
   DESTINATION share/${PROJECT_NAME}
 )
 
+ament_python_install_package(${PROJECT_NAME})
+
+# Python safety stop node install (so ros2 run can find it)
+install(PROGRAMS
+  jarabot_sim/jarabot_sim_safety_stop.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME jarabot_sim_safety_stop
+)
 
 
 ament_package()

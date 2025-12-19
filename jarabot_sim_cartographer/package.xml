@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>jarabot_sim_cartographer</name>
+  <version>0.0.1</version>
+  <description>Jarabot Cartographer SLAM bringup package (launch + lua + rviz).</description>
+
+  <maintainer email="you@example.com">playros</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>cartographer_ros</exec_depend>
+
+  <!-- optional but useful -->
+  <exec_depend>rviz2</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
