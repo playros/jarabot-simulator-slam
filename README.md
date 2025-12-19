@@ -111,7 +111,7 @@ git clone https://github.com/playros/jarabot-simulator-slam.git .
 
 ```bash
 cd ~/jarabot_sim_ws
-colcon build --symlink-install
+colcon build
 source install/setup.bash
 ```
 
