@@ -8,6 +8,7 @@ A ROS 2 Humble–based Jarabot simulator with Cartographer SLAM integration.
 Robotics Developer / ROS 2 Engineer  
 Creator of Jarabot Simulator
 
+---
 
 This repository extends the original **Jarabot Simulator** by adding
 **Cartographer SLAM**, enabling real-time map building and localization
@@ -16,7 +17,7 @@ using simulated LiDAR data.
 It is designed for **ROS 2 SLAM education, simulation-based testing,
 and algorithm development without real hardware**.
 
-> Keywords: ROS2 Simulator, Mobile Robot Simulator, LiDAR, RViz2, Odometry, TF, SLAM, Navigation2
+> Keywords: ROS2 Simulator, Mobile Robot Simulator, LiDAR, RViz2, Odometry, TF, SLAM, Navigation2, Cartographer
 
 ---
 
@@ -25,6 +26,10 @@ and algorithm development without real hardware**.
 ![Jarabot RViz](jarabot.png)
 
 ### Image of the Jarabot simulator operating in RViz
+
+![Jarabot RViz](jarabot_sim_rviz.png)
+
+### Image of the Jarabot simulator operating in RViz with Cartographer
 
 ![Jarabot RViz](jarabot_sim_slam.png)
 
